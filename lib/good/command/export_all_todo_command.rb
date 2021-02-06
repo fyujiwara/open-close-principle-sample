@@ -3,21 +3,17 @@
 module Command
   # export text file containing todo list
   class ExportAllTodoCommand
-    attr_reader :todo_list, :path, :todo_formatter, :calendar_todo_formatter
+    attr_reader :todo_list, :path
 
     def initialize(todo_list:, path:)
       @todo_list = todo_list
       @path = path
-      @todo_formatter = Model::TodoFormatter::TodoFormatter
-      @calendar_todo_formatter = Model::TodoFormatter::CalendarTodoFormatter
     end
 
     def execute
       contents = todo_list.map do |todo|
-        case todo.class.name
-        when 'Entity::Todo' then todo_formatter.new(todo).call
-        when 'Entity::CalendarTodo' then calendar_todo_formatter.new(todo).call
-        end
+        formatter = Model::TodoFormatter::FormatterResolver.resolve(todo)
+        formatter.new(todo).call
       end
 
       content = contents.join("\n----\n")

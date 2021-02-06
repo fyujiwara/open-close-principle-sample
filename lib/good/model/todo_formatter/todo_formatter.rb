@@ -4,6 +4,8 @@ module Model
   module TodoFormatter
     # Format Todo
     class TodoFormatter
+      Model::TodoFormatter::FormatterResolver.add(self)
+
       attr_reader :todo
 
       def initialize(todo)
@@ -15,6 +17,10 @@ module Model
           "[%<status>s]%<title>s\n%<url>s",
           status: format_status, title: todo.title, url: todo.url
         )
+      end
+
+      def self.supports?(target)
+        target.instance_of?(Entity::Todo)
       end
 
       private
