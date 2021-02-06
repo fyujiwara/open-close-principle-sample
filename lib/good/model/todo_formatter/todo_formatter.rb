@@ -1,10 +1,12 @@
 # frozen_string_literal: true
 
+require_relative 'todo_formattable'
+
 module Model
   module TodoFormatter
     # Format Todo
     class TodoFormatter
-      Model::TodoFormatter::FormatterResolver.add(self)
+      include TodoFormattable
 
       attr_reader :todo
 
