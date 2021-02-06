@@ -1,4 +1,4 @@
 --require spec_helper
---require ../lib/bad/todo_app
+--require ../lib/good/todo_app
 --color
 --format documentation
