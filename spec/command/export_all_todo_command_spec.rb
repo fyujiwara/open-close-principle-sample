@@ -37,6 +37,19 @@ RSpec.describe 'ExportAllTodoCommand' do
         expect(File.read(path)).to be_include "[2/6 10時]buy coffee(umeda)\nhttps://example.com/todo/2"
       end
     end
+
+    context 'when kanban todo' do
+      let(:kanban_todo) do
+        Entity::KanbanTodo.new(title: 'buy coffee', url: 'https://example.com/todo/3', status: :complete,
+                               project: 'briefing')
+      end
+      let(:todo_list) { [kanban_todo] }
+      before(:each) { command.execute }
+
+      it 'format with [status]title(project) \n url' do
+        expect(File.read(path)).to be_include "[完了]buy coffee(briefing)\nhttps://example.com/todo/3"
+      end
+    end
   end
 end
 # rubocop:enable Metrics/BlockLength
