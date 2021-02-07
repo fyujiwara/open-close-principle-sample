@@ -5,7 +5,10 @@ RSpec.describe 'ExportAllTodoCommand' do
   describe 'execute' do
     let(:todo_list) { [] }
     let(:path) { 'tmp/todo_list.txt' }
-    let(:command) { Command::ExportAllTodoCommand.new(todo_list: todo_list, path: path) }
+    let(:simple_text_formatter) { Model::ExportFormatter::SimpleTextFormatter }
+    let(:command) do
+      Command::ExportAllTodoCommand.new(todo_list: todo_list, path: path, export_formatter: simple_text_formatter)
+    end
 
     after(:each) do
       File.delete(path) if File.exist?(path)
