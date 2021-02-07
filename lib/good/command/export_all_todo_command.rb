@@ -12,7 +12,7 @@ module Command
 
     def execute
       contents = todo_list.map do |todo|
-        formatter = Model::TodoFormatter::FormatterResolver.resolve(todo)
+        formatter = Model::TodoFormatter::FormatterResolver.resolve(todo, :simple_text)
         formatter.new(todo).call
       end
 

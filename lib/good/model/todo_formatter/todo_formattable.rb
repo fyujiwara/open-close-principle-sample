@@ -17,7 +17,7 @@ module Model
 
       # rubocop:disable Style/Documentation
       module ClassMethods
-        def supports?(target)
+        def supports?(target, type)
           raise NotImplementedError
         end
       end

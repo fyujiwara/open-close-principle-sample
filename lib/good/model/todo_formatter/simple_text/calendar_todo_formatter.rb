@@ -22,8 +22,8 @@ module Model
           )
         end
 
-        def self.supports?(target)
-          target.instance_of?(Entity::CalendarTodo)
+        def self.supports?(target, type)
+          type.to_sym == :simple_text && target.instance_of?(Entity::CalendarTodo)
         end
 
         private

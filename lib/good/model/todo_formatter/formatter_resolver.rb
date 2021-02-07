@@ -9,9 +9,9 @@ module Model
           formatters << formatter
         end
 
-        def resolve(todo)
+        def resolve(todo, type)
           formatters.each do |formatter|
-            break formatter if formatter.supports?(todo)
+            break formatter if formatter.supports?(todo, type)
           end
         end
 
