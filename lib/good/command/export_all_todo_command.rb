@@ -17,7 +17,7 @@ module Command
       end
 
       content = contents.join("\n----\n")
-      File.open(path, 'w') { |f| f.print content }
+      File.write(path, content)
     end
   end
 end
