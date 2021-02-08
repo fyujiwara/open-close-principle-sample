@@ -95,6 +95,48 @@ RSpec.describe 'ExportAllTodoCommand' do
         end
       end
     end
+
+    context 'when export html format' do
+      let(:path) { 'tmp/todo_list.html' }
+      let(:html_formatter) { Model::ExportFormatter::HTMLFormatter }
+      let(:command) do
+        Command::ExportAllTodoCommand.new(todo_list: todo_list, path: path, export_formatter: html_formatter)
+      end
+
+      it 'created file' do
+        expect { command.execute }.to change { File.exist?(path) }.from(false).to(true)
+      end
+
+      context 'when todo' do
+        let(:todo_list) { [todo] }
+        before(:each) { command.execute }
+
+        it 'format with <p>status</p><p>title</p><p>url</p>' do
+          expect(File.read(path))
+            .to be_include '<p>未着手</p><p>buy coffee</p><p>https://example.com/todo/1</p>'
+        end
+      end
+
+      context 'when calendar todo' do
+        let(:todo_list) { [calendar_todo] }
+        before(:each) { command.execute }
+
+        it 'format with <p>target_datetime status</p><p>title</p><p>place</p><p>url</p>' do
+          expect(File.read(path))
+            .to be_include '<p>2/6 10時</p><p>buy coffee</p><p>umeda</p><p>https://example.com/todo/2</p>'
+        end
+      end
+
+      context 'when kanban todo' do
+        let(:todo_list) { [kanban_todo] }
+        before(:each) { command.execute }
+
+        it 'format with <p>status</p><p>title</p><p>project</p><p>url</p>' do
+          expect(File.read(path))
+            .to be_include '<p>完了</p><p>buy coffee</p><p>briefing)</p><p>https://example.com/todo/3</p>'
+        end
+      end
+    end
   end
 end
 # rubocop:enable Metrics/BlockLength
